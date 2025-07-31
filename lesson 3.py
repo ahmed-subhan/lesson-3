@@ -8,8 +8,7 @@ def display_board(board):
     print('____')
     print(' ' + board[3] + ' | ' + board[4] + ' | ' + board[5])
     print('____')
-    print(' ' + board[6] + ' | ' + board[7] + ' | ' + board[8
-    ])
+    print(' ' + board[6] + ' | ' + board[7] + ' | ' + board[8])
 def player_choice():
     symbol = ""
 
@@ -74,3 +73,108 @@ def ai_move(board, ai_symbol, player_symbol):
     move = random.choice(possible_moves)
 
     board[move] = ai_symbol
+def check_win(board, symbol):
+
+    win_conditions = [
+
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+
+        (0, 4, 8), (2, 4, 6)
+
+    ]
+
+    for cond in win_conditions:
+
+        if board[cond[0]] == board[cond[1]] == board[cond[2]] == symbol:
+
+            return True
+        
+    return False
+def check_full(board):
+
+    return all(not spot.isdigit() for spot in board)
+
+def tic_tac_toe():
+
+    print("Welcome to Tic-Tac-Toe!")
+
+    player_name = input(Fore.GREEN + "Enter your name: " + Style.RESET_ALL)
+
+    while True:
+
+        board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+        player_symbol, ai_symbol = player_choice()
+
+        turn = 'Player'
+
+        game_on = True
+
+        while game_on:
+
+            display_board(board)
+
+            if turn == 'player':
+
+                player_move(board, player_symbol)
+
+                if check_win(board, player_symbol):
+
+                    display_board(board)
+
+                    print("Congratulations! " + player_name + ", you have won the game!")
+
+                    game_on = False
+
+                else:
+                    
+                    if check_full(board):
+
+                        display_board(board)
+
+                        print("It's a tie!")
+
+                        break
+
+                    else:
+
+                        turn = "AI"
+
+            else:
+
+                ai_move(board, ai_symbol, player_symbol)
+
+                if check_win(board, ai_symbol):
+
+                    display_board(board)
+
+                    print("AI has won the game!")
+
+                    game_on = False
+
+                else:
+
+                    if check_full(board):
+
+                        display_board(board)
+
+                        print("It's a tie!")
+
+                        break
+
+                    else:
+
+                        turn = 'Player'
+
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+
+        if play_again != 'yes':
+
+            print("Thank you for playing!")
+
+            break
+if __name__ == "__main__":
+
+    tic_tac_toe()
